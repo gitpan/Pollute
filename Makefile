@@ -49,9 +49,9 @@ AR_STATIC_ARGS = cr
 NAME = Pollute
 DISTNAME = Pollute
 NAME_SYM = Pollute
-VERSION = 0.03
-VERSION_SYM = 0_03
-XS_VERSION = 0.03
+VERSION = 0.04
+VERSION_SYM = 0_04
+XS_VERSION = 0.04
 INST_BIN = blib/bin
 INST_EXE = blib/script
 INST_LIB = blib/lib
@@ -108,8 +108,7 @@ H_FILES =
 HTMLLIBPODS    = 
 HTMLSCRIPTPODS = 
 MAN1PODS = 
-MAN3PODS = Pollute.pm \
-	Pollute/Persistent.pm
+MAN3PODS = Pollute.pm
 HTMLEXT = html
 INST_MAN1DIR = blib/man1
 INSTALLMAN1DIR = $(PREFIX)/man/man1
@@ -154,13 +153,10 @@ PERL_ARCHIVE =
 PERL_ARCHIVE_AFTER = 
 
 TO_INST_PM = Pollute.pm \
-	Pollute/Persistent.pm \
 	Pollute_Test.pm
 
 PM_TO_BLIB = Pollute_Test.pm \
 	$(INST_LIBDIR)/Pollute_Test.pm \
-	Pollute/Persistent.pm \
-	$(INST_LIBDIR)/Pollute/Persistent.pm \
 	Pollute.pm \
 	$(INST_LIBDIR)/Pollute.pm
 
@@ -390,11 +386,8 @@ POD2MAN = $(PERL) -we '%m=@ARGV;for (keys %m){' \
 -e 'system(qq[$$^X ].q["-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" $(POD2MAN_EXE) ].qq[$$_>$$m{$$_}])==0 or warn "Couldn\047t install $$m{$$_}\n";' \
 -e 'chmod(oct($(PERM_RW))), $$m{$$_} or warn "chmod $(PERM_RW) $$m{$$_}: $$!\n";}'
 
-manifypods : pure_all Pollute/Persistent.pm \
-	Pollute.pm
+manifypods : pure_all Pollute.pm
 	@$(POD2MAN) \
-	Pollute/Persistent.pm \
-	$(INST_MAN3DIR)/Pollute::Persistent.$(MAN3EXT) \
 	Pollute.pm \
 	$(INST_MAN3DIR)/Pollute.$(MAN3EXT)
 
@@ -433,8 +426,7 @@ realclean purge ::  clean
 	-cd Persistent && $(TEST_F) Makefile.old && $(MAKE) -f Makefile.old realclean
 	-cd Persistent && $(TEST_F) Makefile && $(MAKE)  realclean
 	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	rm -f  $(INST_LIBDIR)/Pollute_Test.pm $(INST_LIBDIR)/Pollute/Persistent.pm
-	rm -f $(INST_LIBDIR)/Pollute.pm
+	rm -f  $(INST_LIBDIR)/Pollute_Test.pm $(INST_LIBDIR)/Pollute.pm
 	rm -rf Makefile Makefile.old
 
 
@@ -677,7 +669,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd:
-	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute\" VERSION=\"0,03,0,0\">\n}. qq{\t<TITLE>Pollute</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute.ppd
+	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute\" VERSION=\"0,04,0,0\">\n}. qq{\t<TITLE>Pollute</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute.ppd
 
 # --- MakeMaker pm_to_blib section:
 

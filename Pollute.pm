@@ -6,7 +6,7 @@ no strict 'refs';
 use warnings;
 use vars qw/$Package $Package1 %Before/;
 
-our $VERSION = '0.03';	# 22 August 2001.
+our $VERSION = '0.04';	# 22 August 2001.
 #	Changes: see Changes file
 
 sub Pollute(){

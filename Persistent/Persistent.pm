@@ -6,7 +6,7 @@ no strict 'refs';
 no warnings;	# all those subroutine redefinitions :)
 use vars qw/$Package %Before/;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub import{
 	my ($Package) = caller;

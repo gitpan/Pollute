@@ -49,9 +49,9 @@ AR_STATIC_ARGS = cr
 NAME = Pollute::Persistent
 DISTNAME = Pollute-Persistent
 NAME_SYM = Pollute_Persistent
-VERSION = 0.03
-VERSION_SYM = 0_03
-XS_VERSION = 0.03
+VERSION = 0.04
+VERSION_SYM = 0_04
+XS_VERSION = 0.04
 INST_BIN = ../blib/bin
 INST_EXE = ../blib/script
 INST_LIB = ../blib/lib
@@ -456,7 +456,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd:
-	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute-Persistent\" VERSION=\"0,03,0,0\">\n}. qq{\t<TITLE>Pollute-Persistent</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute-Persistent.ppd
+	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute-Persistent\" VERSION=\"0,04,0,0\">\n}. qq{\t<TITLE>Pollute-Persistent</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute-Persistent.ppd
 
 # --- MakeMaker pm_to_blib section:
 
