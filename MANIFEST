@@ -1,14 +1,11 @@
 Changes
 MANIFEST
-Makefile
 Makefile.PL
 Persistent/Changes
-Persistent/Makefile
 Persistent/Makefile.PL
 Persistent/Persistent.pm
 Persistent/Persistent_Test.pm
 Persistent/test.pl
-Pollute-0.03.tar
 Pollute.pm
 Pollute_Test.pm
 README
