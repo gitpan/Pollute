@@ -1,0 +1,9 @@
+Changes
+MANIFEST
+Makefile
+Makefile.PL
+Pollute.pm
+Pollute/Persistent.pm
+Pollute_Test.pm
+README
+test.pl
