@@ -1,12 +1,12 @@
 package Pollute;
 
-use 5.006;
+use 5.005;
 use strict;
 no strict 'refs';
-use warnings;
-use vars qw/$Package $Package1 %Before/;
+# not standard in version 5.00503: use warnings;
+use vars qw/$Package $Package1 %Before $VERSION/;
 
-our $VERSION = '0.05';	# 22 August 2001.
+$VERSION = '0.07';	# 07 September 2001.
 #	Changes: see Changes file
 
 sub Pollute(){
@@ -35,10 +35,13 @@ __END__
 
 =head1 NAME
 
+  Pollute, Pollute::Persistent - build include files that use modules indirectly
+
+=head1 SYNOPSIS
+
 Pollute - Perl extension to re-export imported symbols
 Pollute::Persistent - Better Perl extension to re-export imported symbols
 
-=head1 SYNOPSIS
 
   use Pollute;
   use This;
@@ -93,6 +96,6 @@ GPL/Artistic.  Enjoy.
 
 =head1 SEE ALSO
 
-L<perl>.
+L<Pollute::Persistent>.
 
 =cut

@@ -10,3 +10,9 @@ Revision history for Perl extension Pollute.
 	- make Pollute::Persistent work recursively
 	- correct documentation
 
+0.05 fied many errors and packaging problems
+
+0.06 removed "our" and added $VERSION to the use vars list
+
+0.07 removed "use warnings" and changed version requirement to 5.005
+

@@ -1,12 +1,12 @@
 package Pollute::Persistent;
 
-use 5.006;
+use 5.005;
 use strict;
 no strict 'refs';
-no warnings;	# all those subroutine redefinitions :)
-use vars qw/$Package %Before/;
+# no warnings;	# all those subroutine redefinitions :)
+use vars qw/$Package $VERSION/;
 
-our $VERSION = '0.04';
+$VERSION = '0.07';
 
 sub import{
 	my ($Package) = caller;
@@ -50,9 +50,17 @@ Pollute::Persistent - Perl extension to re-export imported symbols
 
 =head1 DESCRIPTION
 
-  On use, all the symbols in the caller's symbol table are listed into
-  %Pollute::Before, and the Pollute subroutine is exported (through direct
-  symbol table manipulation, not through "Exporter.")
+  Pollute::Persistent's C<import> function creates a lexical varible
+  C<my %before> and puts in it one entry for every entry in the 
+  calling package's symbol table.  Then it (over)writes the calling
+  package's C<import> function to compare the symbol table as it is
+  now to what it was when Pollute::Persistent was initially used and
+  makes a list of new items.  Then it rewrites the C<import> function
+  again to export the new items, and calls the new, concise import function
+  which exports all new items.
+
+  Subsequent uses of the Persistently Polluting module will get the short
+  import funtion.
 
   Pollute::Persistent rewrites its caller's import routine.
   for later use.  Example:
