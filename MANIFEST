@@ -3,6 +3,7 @@ MANIFEST
 MANIFEST.bak
 Makefile
 Makefile.PL
+Makefile.old
 Persistent/Changes
 Persistent/Makefile
 Persistent/Makefile.PL

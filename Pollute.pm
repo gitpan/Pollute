@@ -6,7 +6,7 @@ no strict 'refs';
 use warnings;
 use vars qw/$Package $Package1 %Before/;
 
-our $VERSION = '0.02';	# 16 August 2001.
+our $VERSION = '0.03';	# 22 August 2001.
 #	Changes: see Changes file
 
 sub Pollute(){
@@ -32,11 +32,11 @@ sub import{
 
 1;
 __END__
-# Below is stub documentation for your module. You better edit it!
 
 =head1 NAME
 
 Pollute - Perl extension to re-export imported symbols
+Pollute::Persistent - Better Perl extension to re-export imported symbols
 
 =head1 SYNOPSIS
 
@@ -45,6 +45,15 @@ Pollute - Perl extension to re-export imported symbols
   use That;
   use TheOther;
   Pollute;	# exports anything imported from This, That or TheOther
+
+or
+
+  use Pollute::Persistent;
+  use This;
+  use That;
+  use TheOther;
+  # use of this module exports anything imported from This, That or TheOther
+  
 
 =head1 DESCRIPTION
 
@@ -55,11 +64,21 @@ Pollute - Perl extension to re-export imported symbols
   After importing various things, run Pollute to export everything
   you imported since the C<use Pollute> line into the calling package.
 
+  Pollute::Persistent does the same thing, but using lexicals instead
+  of package variables.  Instead of requiring an explicit call to "Pollute"
+  Pollute::Persistent clobbers the import subroutine, meaning that you can
+  create "include file files" by using Pollute::Persistent
 
 =head2 EXPORT
 
 the C<Pollute> function, which pollutes its caller
-with the symbols listed in @Pollute::Symbols
+with the symbols which appear in the symbol table but do
+not appear in %Before.
+
+
+Pollute::Persistent clobbers the calling package's C<import> function,
+and is suitable for recursive use.
+
 
 =head1 AUTHOR
 

@@ -6,12 +6,11 @@ no strict 'refs';
 no warnings;	# all those subroutine redefinitions :)
 use vars qw/$Package %Before/;
 
-our $VERSION = '0.01';
-#	Changes: see Changes file
+our $VERSION = '0.03';
 
 sub import{
-	($Package) = caller;
-	 %Before = map {($_,1)} keys %{"${Package}::"};
+	my ($Package) = caller;
+	my %Before = map {($_,1)} keys %{"${Package}::"};
 	
 	*{"${Package}::import"} = sub {
 
@@ -24,18 +23,14 @@ sub import{
 		undef %Before;
 		*{"${Package}::import"} =
 		    sub {	# may give a redef. warning
-			my ($Package) = caller;
+			($Package) = caller;
 			foreach (keys %Symbols) {
 				# print "setting *{\"${Package}::$Symbols{$_}\"} = *{$_}\n";
 				*{"${Package}::$Symbols{$_}"} = *{$_};
 			};
 		    };
 		goto &{"${Package}::import"};
-		undef $Package;
-		
-
 	};
-	
 };
 
 1;

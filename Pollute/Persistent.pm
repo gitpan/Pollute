@@ -1,4 +1,4 @@
-pckage Pollute;
+package Pollute;
 
 use 5.006;
 use strict;

@@ -49,14 +49,14 @@ AR_STATIC_ARGS = cr
 NAME = Pollute::Persistent
 DISTNAME = Pollute-Persistent
 NAME_SYM = Pollute_Persistent
-VERSION = 0.01
-VERSION_SYM = 0_01
-XS_VERSION = 0.01
-INST_BIN = blib/bin
-INST_EXE = blib/script
-INST_LIB = blib/lib
-INST_ARCHLIB = blib/arch
-INST_SCRIPT = blib/script
+VERSION = 0.03
+VERSION_SYM = 0_03
+XS_VERSION = 0.03
+INST_BIN = ../blib/bin
+INST_EXE = ../blib/script
+INST_LIB = ../blib/lib
+INST_ARCHLIB = ../blib/arch
+INST_SCRIPT = ../blib/script
 PREFIX = /usr/local
 INSTALLDIRS = site
 INSTALLPRIVLIB = $(PREFIX)/lib/perl5/5.6.1
@@ -111,10 +111,10 @@ HTMLSCRIPTPODS =
 MAN1PODS = 
 MAN3PODS = Persistent.pm
 HTMLEXT = html
-INST_MAN1DIR = blib/man1
+INST_MAN1DIR = ../blib/man1
 INSTALLMAN1DIR = $(PREFIX)/man/man1
 MAN1EXT = 1
-INST_MAN3DIR = blib/man3
+INST_MAN3DIR = ../blib/man3
 INSTALLMAN3DIR = $(PREFIX)/man/man3
 MAN3EXT = 3
 PERM_RW = 644
@@ -153,10 +153,13 @@ PERL_ARCHIVE =
 
 PERL_ARCHIVE_AFTER = 
 
-TO_INST_PM = Persistent.pm
+TO_INST_PM = Persistent.pm \
+	Persistent_Test.pm
 
 PM_TO_BLIB = Persistent.pm \
-	$(INST_LIBDIR)/Persistent.pm
+	$(INST_LIBDIR)/Persistent.pm \
+	Persistent_Test.pm \
+	$(INST_LIBDIR)/Persistent_Test.pm
 
 
 # --- MakeMaker tool_autosplit section:
@@ -193,49 +196,8 @@ MKPATH = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e mkpath
 # need any changes to the core distribution and works with older perls
 EQUALIZE_TIMESTAMP = $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Command -e eqtime
 
-# Here we warn users that an old packlist file was found somewhere,
-# and that they should call some uninstall routine
-WARN_IF_OLD_PACKLIST = $(PERL) -we 'exit unless -f $$ARGV[0];' \
--e 'print "WARNING: I have found an old package in\n";' \
--e 'print "\t$$ARGV[0].\n";' \
--e 'print "Please make sure the two installations are not conflicting\n";'
 
-UNINST=0
-VERBINST=0
-
-MOD_INSTALL = $(PERL) -I$(INST_LIB) -I$(PERL_LIB) -MExtUtils::Install \
--e "install({@ARGV},'$(VERBINST)',0,'$(UNINST)');"
-
-DOC_INSTALL = $(PERL) -e '$$\="\n\n";' \
--e 'print "=head2 ", scalar(localtime), ": C<", shift, ">", " L<", $$arg=shift, "|", $$arg, ">";' \
--e 'print "=over 4";' \
--e 'while (defined($$key = shift) and defined($$val = shift)){print "=item *";print "C<$$key: $$val>";}' \
--e 'print "=back";'
-
-UNINSTALL =   $(PERL) -MExtUtils::Install \
--e 'uninstall($$ARGV[0],1,1); print "\nUninstall is deprecated. Please check the";' \
--e 'print " packlist above carefully.\n  There may be errors. Remove the";' \
--e 'print " appropriate files manually.\n  Sorry for the inconveniences.\n"'
-
-
-# --- MakeMaker dist section:
-
-DISTVNAME = $(DISTNAME)-$(VERSION)
-TAR  = tar
-TARFLAGS = cvf
-ZIP  = zip
-ZIPFLAGS = -r
-COMPRESS = gzip --best
-SUFFIX = .gz
-SHAR = shar
-PREOP = @$(NOOP)
-POSTOP = @$(NOOP)
-TO_UNIX = @$(NOOP)
-CI = ci -u
-RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
-DIST_CP = best
-DIST_DEFAULT = tardist
-
+# --- MakeMaker dist section skipped.
 
 # --- MakeMaker macro section:
 
@@ -414,173 +376,21 @@ clean ::
 # Delete temporary files (via clean) and also delete installed files
 realclean purge ::  clean
 	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	rm -f  $(INST_LIBDIR)/Persistent.pm
+	rm -f  $(INST_LIBDIR)/Persistent.pm $(INST_LIBDIR)/Persistent_Test.pm
 	rm -rf Makefile Makefile.old
 
 
-# --- MakeMaker dist_basics section:
+# --- MakeMaker dist_basics section skipped.
 
-distclean :: realclean distcheck
+# --- MakeMaker dist_core section skipped.
 
-distcheck :
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Manifest=fullcheck \
-		-e fullcheck
+# --- MakeMaker dist_dir section skipped.
 
-skipcheck :
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Manifest=skipcheck \
-		-e skipcheck
+# --- MakeMaker dist_test section skipped.
 
-manifest :
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Manifest=mkmanifest \
-		-e mkmanifest
+# --- MakeMaker dist_ci section skipped.
 
-veryclean : realclean
-	$(RM_F) *~ *.orig */*~ */*.orig
-
-
-# --- MakeMaker dist_core section:
-
-dist : $(DIST_DEFAULT)
-	@$(PERL) -le 'print "Warning: Makefile possibly out of date with $$vf" if ' \
-	    -e '-e ($$vf="$(VERSION_FROM)") and -M $$vf < -M "Makefile";'
-
-tardist : $(DISTVNAME).tar$(SUFFIX)
-
-zipdist : $(DISTVNAME).zip
-
-$(DISTVNAME).tar$(SUFFIX) : distdir
-	$(PREOP)
-	$(TO_UNIX)
-	$(TAR) $(TARFLAGS) $(DISTVNAME).tar $(DISTVNAME)
-	$(RM_RF) $(DISTVNAME)
-	$(COMPRESS) $(DISTVNAME).tar
-	$(POSTOP)
-
-$(DISTVNAME).zip : distdir
-	$(PREOP)
-	$(ZIP) $(ZIPFLAGS) $(DISTVNAME).zip $(DISTVNAME)
-	$(RM_RF) $(DISTVNAME)
-	$(POSTOP)
-
-uutardist : $(DISTVNAME).tar$(SUFFIX)
-	uuencode $(DISTVNAME).tar$(SUFFIX) \
-		$(DISTVNAME).tar$(SUFFIX) > \
-		$(DISTVNAME).tar$(SUFFIX)_uu
-
-shdist : distdir
-	$(PREOP)
-	$(SHAR) $(DISTVNAME) > $(DISTVNAME).shar
-	$(RM_RF) $(DISTVNAME)
-	$(POSTOP)
-
-
-# --- MakeMaker dist_dir section:
-
-distdir :
-	$(RM_RF) $(DISTVNAME)
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Manifest=manicopy,maniread \
-		-e "manicopy(maniread(),'$(DISTVNAME)', '$(DIST_CP)');"
-
-
-# --- MakeMaker dist_test section:
-
-disttest : distdir
-	cd $(DISTVNAME) && $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) Makefile.PL
-	cd $(DISTVNAME) && $(MAKE)
-	cd $(DISTVNAME) && $(MAKE) test
-
-
-# --- MakeMaker dist_ci section:
-
-ci :
-	$(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) -MExtUtils::Manifest=maniread \
-		-e "@all = keys %{ maniread() };" \
-		-e 'print("Executing $(CI) @all\n"); system("$(CI) @all");' \
-		-e 'print("Executing $(RCS_LABEL) ...\n"); system("$(RCS_LABEL) @all");'
-
-
-# --- MakeMaker install section:
-
-install :: all pure_install doc_install
-
-install_perl :: all pure_perl_install doc_perl_install
-
-install_site :: all pure_site_install doc_site_install
-
-install_ :: install_site
-	@echo INSTALLDIRS not defined, defaulting to INSTALLDIRS=site
-
-pure_install :: pure_$(INSTALLDIRS)_install
-
-doc_install :: doc_$(INSTALLDIRS)_install
-	@echo Appending installation info to $(INSTALLARCHLIB)/perllocal.pod
-
-pure__install : pure_site_install
-	@echo INSTALLDIRS not defined, defaulting to INSTALLDIRS=site
-
-doc__install : doc_site_install
-	@echo INSTALLDIRS not defined, defaulting to INSTALLDIRS=site
-
-pure_perl_install ::
-	@$(MOD_INSTALL) \
-		read $(PERL_ARCHLIB)/auto/$(FULLEXT)/.packlist \
-		write $(INSTALLARCHLIB)/auto/$(FULLEXT)/.packlist \
-		$(INST_LIB) $(INSTALLPRIVLIB) \
-		$(INST_ARCHLIB) $(INSTALLARCHLIB) \
-		$(INST_BIN) $(INSTALLBIN) \
-		$(INST_SCRIPT) $(INSTALLSCRIPT) \
-		$(INST_HTMLLIBDIR) $(INSTALLHTMLPRIVLIBDIR) \
-		$(INST_HTMLSCRIPTDIR) $(INSTALLHTMLSCRIPTDIR) \
-		$(INST_MAN1DIR) $(INSTALLMAN1DIR) \
-		$(INST_MAN3DIR) $(INSTALLMAN3DIR)
-	@$(WARN_IF_OLD_PACKLIST) \
-		$(SITEARCHEXP)/auto/$(FULLEXT)
-
-
-pure_site_install ::
-	@$(MOD_INSTALL) \
-		read $(SITEARCHEXP)/auto/$(FULLEXT)/.packlist \
-		write $(INSTALLSITEARCH)/auto/$(FULLEXT)/.packlist \
-		$(INST_LIB) $(INSTALLSITELIB) \
-		$(INST_ARCHLIB) $(INSTALLSITEARCH) \
-		$(INST_BIN) $(INSTALLBIN) \
-		$(INST_SCRIPT) $(INSTALLSCRIPT) \
-		$(INST_HTMLLIBDIR) $(INSTALLHTMLSITELIBDIR) \
-		$(INST_HTMLSCRIPTDIR) $(INSTALLHTMLSCRIPTDIR) \
-		$(INST_MAN1DIR) $(INSTALLMAN1DIR) \
-		$(INST_MAN3DIR) $(INSTALLMAN3DIR)
-	@$(WARN_IF_OLD_PACKLIST) \
-		$(PERL_ARCHLIB)/auto/$(FULLEXT)
-
-doc_perl_install ::
-	-@$(MKPATH) $(INSTALLARCHLIB)
-	-@$(DOC_INSTALL) \
-		"Module" "$(NAME)" \
-		"installed into" "$(INSTALLPRIVLIB)" \
-		LINKTYPE "$(LINKTYPE)" \
-		VERSION "$(VERSION)" \
-		EXE_FILES "$(EXE_FILES)" \
-		>> $(INSTALLARCHLIB)/perllocal.pod
-
-doc_site_install ::
-	-@$(MKPATH) $(INSTALLARCHLIB)
-	-@$(DOC_INSTALL) \
-		"Module" "$(NAME)" \
-		"installed into" "$(INSTALLSITELIB)" \
-		LINKTYPE "$(LINKTYPE)" \
-		VERSION "$(VERSION)" \
-		EXE_FILES "$(EXE_FILES)" \
-		>> $(INSTALLARCHLIB)/perllocal.pod
-
-
-uninstall :: uninstall_from_$(INSTALLDIRS)dirs
-
-uninstall_from_perldirs ::
-	@$(UNINSTALL) $(PERL_ARCHLIB)/auto/$(FULLEXT)/.packlist
-
-uninstall_from_sitedirs ::
-	@$(UNINSTALL) $(SITEARCHEXP)/auto/$(FULLEXT)/.packlist
-
+# --- MakeMaker install section skipped.
 
 # --- MakeMaker force section:
 # Phony target to force checking subdirectories.
@@ -615,18 +425,8 @@ Makefile : Makefile.PL $(CONFIGDEP)
 # --- MakeMaker staticmake section:
 
 # --- MakeMaker makeaperl section ---
-MAP_TARGET    = perl
+MAP_TARGET    = ../perl
 FULLPERL      = /usr/local/bin/perl
-
-$(MAP_TARGET) :: static $(MAKE_APERL_FILE)
-	$(MAKE) -f $(MAKE_APERL_FILE) $@
-
-$(MAKE_APERL_FILE) : $(FIRST_MAKEFILE)
-	@echo Writing \"$(MAKE_APERL_FILE)\" for this $(MAP_TARGET)
-	@$(PERL) -I$(INST_ARCHLIB) -I$(INST_LIB) -I$(PERL_ARCHLIB) -I$(PERL_LIB) \
-		Makefile.PL DIR= \
-		MAKEFILE=$(MAKE_APERL_FILE) LINKTYPE=static \
-		MAKEAPERL=1 NORECURS=1 CCCDLFLAGS=
 
 
 # --- MakeMaker test section:
@@ -656,7 +456,7 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd:
-	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute-Persistent\" VERSION=\"0,01,0,0\">\n}. qq{\t<TITLE>Pollute-Persistent</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute-Persistent.ppd
+	@$(PERL) -e "print qq{<SOFTPKG NAME=\"Pollute-Persistent\" VERSION=\"0,03,0,0\">\n}. qq{\t<TITLE>Pollute-Persistent</TITLE>\n}. qq{\t<ABSTRACT>Perl extension to re-export imported symbols</ABSTRACT>\n}. qq{\t<AUTHOR>A. U. Thor &lt;a.u.thor\@a.galaxy.far.far.away&gt;</AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"i586-linux\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > Pollute-Persistent.ppd
 
 # --- MakeMaker pm_to_blib section:
 

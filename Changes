@@ -6,3 +6,7 @@ Revision history for Perl extension Pollute.
 0.02  Tue Aug 21 12:24:36 CDT 2001
 	- added tests of functionality and non-functionality too. (dln)
 	- Packaging for upload to CPAN.
+0.03  Wed Aug 22 2001
+	- make Pollute::Persistent work recursively
+	- correct documentation
+
